@@ -1,4 +1,7 @@
-﻿using DAL.Models;
+﻿using Core.Repository.Interface;
+using DAL.DTO.DTORequest.Interface;
+using DAL.DTO.DTOResponse.Interface;
+using DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +10,10 @@ using System.Threading.Tasks;
 
 namespace Core.Manager.Interface
 {
-    public interface IBaseManager<T> where T : class, IBaseEntity, new()
+    public interface IBaseManager<T, TResponse, TRequest, TRequestCreate>
+        : IBaseRepository<T, TResponse, TRequest, TRequestCreate>
+        where T : class, IBaseEntity, new()
     {
         
-        Task<T> CreateAsync(T entity);
-        
-        Task UpdateAsync(int Id,T entity);
-
-        Task DeleteAsync(int Id);
-
-        Task<List<T>> GetAllAsync();
-
-        Task<T> GetById(int id);
     }
 }

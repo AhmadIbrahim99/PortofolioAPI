@@ -1,14 +1,17 @@
-﻿using DAL.Models;
+﻿using DAL.DTO.DTORequest.Interface;
+using DAL.DTO.DTOResponse.Interface;
+using DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PortofolioAPI.Controllers.Interface
 {
-    public interface IBaseController<T> where T : class, IBaseEntity, new()
+    public interface IBaseController<T, TResponse, TRequest, TRequestCreate> 
+        where T : class, IBaseEntity, new()
     {
         Task<IActionResult> Get();
         Task<IActionResult> GetById(int id);
-        Task<IActionResult> Create(T entity);
-        Task<IActionResult> Update(int id, T entity);
+        Task<IActionResult> Create(TRequestCreate entity);
+        Task<IActionResult> Update(int id, TRequest entity);
         Task<IActionResult> Delete(int id);
 
     }

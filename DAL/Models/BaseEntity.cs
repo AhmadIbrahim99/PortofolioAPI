@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class BaseEntity : IBaseEntity
+    public abstract class BaseEntity : IBaseEntity
     {
         public int Id { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;

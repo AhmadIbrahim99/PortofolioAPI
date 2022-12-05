@@ -1,4 +1,6 @@
 ﻿using Core.Manager.Interface;
+using DAL.DTO.DTORequest.Interface;
+using DAL.DTO.DTOResponse.Interface;
 using DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,12 +10,15 @@ namespace PortofolioAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaseController<T> : ControllerBase,
-        IBaseController<T> where T : class, IBaseEntity, new()
+    public class BaseController<T, TResponse, TRequest, TRequestCreate> : 
+        ControllerBase,
+        IBaseController<T, TResponse, TRequest, TRequestCreate> 
+        where T : class, IBaseEntity, new()
     {
-        private readonly IBaseManager<T> _manager;
+        private readonly IBaseManager<T, TResponse, TRequest, TRequestCreate> _manager;
 
-        public BaseController(IBaseManager<T> manager)
+        public BaseController(
+            IBaseManager<T, TResponse, TRequest, TRequestCreate> manager)
         {
             _manager = manager;
         }
@@ -27,11 +32,11 @@ namespace PortofolioAPI.Controllers
                Ok(await _manager.GetById(id));
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(T entity) =>
+        public async Task<IActionResult> Create(TRequestCreate entity) =>
                CreatedAtAction(nameof(Get),await _manager.CreateAsync(entity));
 
         [HttpPut("Update")]
-        public async Task<IActionResult> Update(int id, T entity)
+        public async Task<IActionResult> Update(int id, TRequest entity)
         {
             await _manager.UpdateAsync(id, entity);
             return Ok();
